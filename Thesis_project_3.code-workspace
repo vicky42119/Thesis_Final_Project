@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "Thesis_project_3",
+			"path": "../../Thesis_project_3/Thesis_project_3"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Thesis_project_3"
+	}
+}
