@@ -8,6 +8,11 @@
         flex-direction: row; /* Stack buttons vertically on small screens */
     }
 
+    .Description {
+        margin-bottom: 2em;
+        border-bottom: solid 1pt rgb(235, 56, 127);
+    }
+
     main {
         z-index: -1;
         overflow-y: visible;
@@ -75,7 +80,7 @@
     }
 
     .Description {
-        color: white; /* Ensure all text is white for visibility */
+        color: rgb(235, 56, 127); /* Ensure all text is white for visibility */
         display: flex;
         flex-direction: row;
         gap: 20px;
@@ -88,27 +93,27 @@
     h1 {
         font-size: 20pt;
         font-weight: 700; 
-        color: white;/* Adds space above and below the title */
+        color: rgb(235, 56, 127);/* Adds space above and below the title */
     }
 
     h2 {
         font-size: 8pt;
         font-weight: 200;
-        color: white; /* Adds space above and below the title */
+        color:rgb(235, 56, 127); /* Adds space above and below the title */
     }
 
     h3 {
         font-size: 8pt;
         font-weight: 700;
-        color: white; /* Adds space above and below the title */
+        color: rgb(235, 56, 127); /* Adds space above and below the title */
     }
     
     
     /* Style for the toggle buttons */
     #toggle-buttons button {
         background-color: #000; /* Button background */
-        color: #FFF; /* Text color */
-        border: 1px solid #FFF; /* White border */
+        color: rgb(235, 56, 127); /* Text color */
+        border: 1px solid rgb(235, 56, 127); /* White border */
         padding: 3px 15px; /* Padding inside the buttons */
         margin: 0 0px; /* Space between buttons */
         cursor: pointer; /* Cursor to pointer to indicate it's clickable */
@@ -123,7 +128,7 @@
         gap: 10px; /* Space between buttons */ /* Space above and below the button container */
         margin-left: 10%;
         margin-right: 10%;
-        margin-top: 20px;
+        margin-top: 5px;
         margin-bottom: 20px;
     }
 
@@ -134,7 +139,7 @@
     #sensor-key {
        
        /* Offset by half its width to truly center it */
-        border: 1px solid white; /* White border */
+        border: 1px solid rgb(235, 56, 127); /* White border */
         background-color: transparent; /* Transparent background */
         padding: 10px;
         border-radius: 2px; /* Optional: Adds rounded corners */
@@ -144,10 +149,23 @@
         gap: 15px;
         margin-left: 10%;
         margin-right: 10%;
-        justify-content: flex-end;
+        justify-content: center;
+        margin: 2em;
 
         
     }
+
+
+
+    .ddd {
+       
+        /* Offset by half its width to truly center it */
+         
+         margin-left: 10%;
+         margin-right: 10%;
+ 
+         
+     }
     
     .sensor-color {
         display: inline-block;
