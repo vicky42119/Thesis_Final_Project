@@ -104,7 +104,7 @@ function draw() {
 }
 
 function drawSensorData(sensor) {
-  for (let i = 0; i < sensorData[sensor].values.length; i += 10) {
+  for (let i = 0; i < sensorData[sensor].values.length; i += 5) {
     let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 1, 10);
     let position = sensorData[sensor].positions[i];
 

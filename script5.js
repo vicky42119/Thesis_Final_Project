@@ -15,7 +15,7 @@ const sensorColors = {
 function preload() {
   // Load the CSV file
   table = loadTable(
-    'data.csv',
+    'data_3.csv',
     'csv',
     'header',
     data => console.log('CSV data loaded successfully:', data),
@@ -104,7 +104,7 @@ function draw() {
 }
 
 function drawSensorData(sensor) {
-  for (let i = 0; i < sensorData[sensor].values.length; i += 20) {
+  for (let i = 0; i < sensorData[sensor].values.length; i += 2) {
     let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 1, 3);
     let position = sensorData[sensor].positions[i];
 
