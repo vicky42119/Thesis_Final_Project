@@ -122,26 +122,27 @@
         background-color: #000; /* Button background */
         color: rgb(235, 56, 127); /* Text color */
         border: 1px solid rgb(235, 56, 127); /* White border */
-        padding: 3px 15px; /* Padding inside the buttons */
+        padding: 7px 7px; /* Padding inside the buttons */
         margin: 0 0px; /* Space between buttons */
         cursor: pointer; /* Cursor to pointer to indicate it's clickable */
         font-size: 12px; /* Adjust the font size as needed */
+        width: 70px;
     }
     
     #toggle-buttons {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center; /* Center buttons horizontally */
-        gap: 10px; /* Space between buttons */ /* Space above and below the button container */
-        margin-left: 10%;
+        gap: 5px; /* Space between buttons */ /* Space above and below the button container */
         margin-right: 10%;
+        margin-left: 10%;
         margin-top: 5px;
         margin-bottom: 0px;
     }
 
     #toggle-buttons button:active { 
-        background-color: red; 
+        background-color: rgb(235, 56, 127); 
     }
     
     #sensor-key {
