@@ -24,7 +24,7 @@ function preload() {
 }
 
 function setup() {
-  let cnv = createCanvas(400, 350, WEBGL);
+  let cnv = createCanvas(400, 300, WEBGL);
   cnv.id('canvas');
 
   if (!table) {
