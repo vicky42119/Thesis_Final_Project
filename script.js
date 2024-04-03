@@ -24,7 +24,7 @@ function preload() {
 }
 
 function setup() {
-  let cnv = createCanvas(400, 400, WEBGL);
+  let cnv = createCanvas(400, 350, WEBGL);
   cnv.id('canvas');
 
   if (!table) {
@@ -70,7 +70,7 @@ function updateSensorData(sensor, sensorValue, rowIndex) {
 }
 
 function calculatePosition(sensor, value, index) {
-  let radius = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, 200, 400);
+  let radius = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, 150, 300);
   let theta = map(index, 0, table.getRowCount(), 0, TWO_PI);
   let phi = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, -PI / 2, PI / 2);
 
