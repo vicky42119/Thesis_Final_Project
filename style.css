@@ -147,8 +147,7 @@
     
     #sensor-key {
        
-       /* Offset by half its width to truly center it */
-        border: 1px solid rgb(235, 56, 127); /* White border */
+       /* Offset by half its width to truly center it */ /* White border */
         background-color: transparent; /* Transparent background */
         padding: 10px;
         border-radius: 2px; /* Optional: Adds rounded corners */
