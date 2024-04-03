@@ -1,85 +1,137 @@
+let sensorData = {}; // Object to store EEG sensor data
+let rotationSpeed = 0.005; // Adjust the rotation speed as needed
+let sensorVisibility = {}; // Object to manage the visibility of each sensor's data points
 let table; // Variable to hold the CSV data
 
-// Colors for heatmap intensity (min to max)
-const minColor = [0, 0, 255]; // Blue for lower values
-const maxColor = [255, 230, 0]; // Red for higher values
-
-let actualMinValue = Infinity; // Correctly initialized to Infinity
-let actualMaxValue = -Infinity; // Correctly initialized to -Infinity
+// Pastel colors for each sensor
+const sensorColors = {
+  'EEG.AF3': '#FFB3BA', // Pastel Red
+  'EEG.T7': '#BAFFC9', // Pastel Green
+  'EEG.Pz': '#BAE1FF', // Pastel Blue
+  'EEG.T8': '#FFFFBA', // Pastel Yellow
+  'EEG.AF4': '#FFDFBA' // Pastel Orange
+};
 
 function preload() {
-  // Adjust the file path as necessary
-  table = loadTable('data.csv', 'csv', 'header',
-    () => console.log('CSV data loaded successfully'),
-    error => console.error('Error loading CSV file:', error));
+  // Load the CSV file
+  table = loadTable(
+    'data.csv',
+    'csv',
+    'header',
+    data => console.log('CSV data loaded successfully:', data),
+    error => console.error('Error loading CSV file:', error)
+  );
 }
 
 function setup() {
-  createCanvas(800, 1000);
-  noLoop(); // No need to redraw unless the data changes
-  noSmooth(); // Ensure pixelated look
-
-  // Calculate the actual min and max values from the data
-  for (let row of table.getRows()) {
-    for (let col = 1; col < table.getColumnCount(); col++) { // Skip the first column (time)
-      let val = row.getNum(col);
-      if (!isNaN(val)) { // Check if the value is a number
-        actualMinValue = min(actualMinValue, val);
-        actualMaxValue = max(actualMaxValue, val);
-      }
-    }
-  }
-}
-
-function draw() {
-  background(255);
+  let cnv = createCanvas(400, 400, WEBGL);
+  cnv.id('canvas');
 
   if (!table) {
     console.error('CSV data not loaded. Check the console for preload errors.');
     return;
   }
 
-  drawHeatmap();
+  const sensorColumns = ['EEG.AF3', 'EEG.T7', 'EEG.Pz', 'EEG.T8', 'EEG.AF4'];
+  initializeSensorData(sensorColumns);
+
+  // Create toggle buttons for each sensor
+  createToggleButtons(sensorColumns);
+
+  camera(0, 1600, 500);
+  orbitControl();
 }
 
-function valueToColor(value, minValue, maxValue) {
-  const normalized = map(value, minValue, maxValue, 0, 1);
-  if (normalized < 100) {
-    // Interpolate between minColor and midColor
-    return lerpColor(color(...minColor), color(100, 255, 300), normalized * 2); // Green as a middle color
-  } else {
-    // Interpolate between midColor and maxColor
-    return lerpColor(color(10, 255, 0), color(...maxColor), (normalized - 0.5) * 300);
-  }
-}
+function initializeSensorData(sensorColumns) {
+  sensorColumns.forEach((sensor, index) => {
+    sensorData[sensor] = { minValue: Infinity, maxValue: -Infinity, values: [], positions: [] };
+    sensorVisibility[sensor] = true; // Initially all sensors are visible
 
-function drawHeatmap() {
-    const reductionFactor = 400; // Use every 20th data point for a more pixelated look
-    const numTimeSteps = Math.ceil(table.getRowCount() / reductionFactor);
-    const numSensors = table.getColumnCount() - 1; // Exclude the first column (time)
-    const cellHeight = 100 / numSensors;
-    const cellWidth = width / numTimeSteps;
-  
-    // Define a small margin for white space between cells
-    const cellMargin = 2; // Adjust the margin size as needed
-  
-    for (let i = 0; i < table.getRowCount(); i += reductionFactor) { // Increment by reductionFactor
-      let reducedIndex = Math.floor(i / reductionFactor); // Calculate reduced index for drawing
-      for (let j = 1; j <= numSensors; j++) { // Start at 1 to skip the time column
-        const sensorValue = table.getNum(i, j);
-        const cellColor = valueToColor(sensorValue, actualMinValue, actualMaxValue);
-        fill(cellColor);
-        noStroke();
-  
-        // Draw each cell with a margin
-        rect(reducedIndex * cellWidth + cellMargin / 2, 
-             (j - 1) * cellHeight + cellMargin / 2, 
-             cellWidth - cellMargin, 
-             cellHeight - cellMargin);
+    // Process each row of the table
+    for (let i = 0; i < table.getRowCount(); i++) {
+      let sensorValue = table.getNum(i, sensor);
+      if (!isNaN(sensorValue)) {
+        updateSensorData(sensor, sensorValue, i);
+      } else {
+        console.warn(`Undefined or NaN value found in ${sensor} at row ${i}`);
       }
     }
+  });
+}
+
+function updateSensorData(sensor, sensorValue, rowIndex) {
+  sensorData[sensor].minValue = Math.min(sensorData[sensor].minValue, sensorValue);
+  sensorData[sensor].maxValue = Math.max(sensorData[sensor].maxValue, sensorValue);
+  sensorData[sensor].values.push(sensorValue);
+
+  // Calculate and store positions
+  let { x, y, z } = calculatePosition(sensor, sensorValue, rowIndex);
+  sensorData[sensor].positions.push(createVector(x, y, z));
+}
+
+function calculatePosition(sensor, value, index) {
+  let radius = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, 150, 300);
+  let theta = map(index, 0, table.getRowCount(), 0, TWO_PI);
+  let phi = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, -PI / 2, PI / 2);
+
+  return {
+    x: radius * cos(theta) * cos(phi) + random(-50, 50),
+    y: radius * sin(phi) + random(-50, 50),
+    z: radius * sin(theta) * cos(phi) + random(-50, 50)
+  };
+}
+
+function createToggleButtons(sensorColumns) {
+  let container = select('#toggle-buttons'); // Assuming p5.dom is in use, else use document.getElementById
+
+  sensorColumns.forEach((sensor, index) => {
+    let button = createButton(` ${sensor}`);
+    button.parent(container); // Append the button to the container
+    button.mousePressed(() => sensorVisibility[sensor] = !sensorVisibility[sensor]);
+  });
+}
+
+function draw() {
+  background(0);
+  orbitControl();
+  rotateY(frameCount * rotationSpeed);
+
+  for (let sensor in sensorData) {
+    if (sensorVisibility[sensor]) {
+      drawSensorData(sensor);
+    }
   }
-  
+}
+
+function drawSensorData(sensor) {
+  for (let i = 0; i < sensorData[sensor].values.length; i += 20) {
+    let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 1, 3);
+    let position = sensorData[sensor].positions[i];
+
+    push();
+    translate(position.x, position.y, position.z);
+    fill(sensorColors[sensor]); // Use the pastel color for the sensor
+    noStroke();
+    sphere(diameter);
+    pop();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.getElementById('overlay');
+  const revealButton = document.getElementById('revealButton');
+
+  revealButton.addEventListener('click', function() {
+    // Fade out effect
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.5s ease';
+
+    // Remove overlay after fade out
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 500); // Match the duration of the fade-out transition
+  });
+});
   
 
 

@@ -27,6 +27,10 @@
     body {
         position: relative;
         overflow-x: hidden;
+        overflow-y: hidden;
+        overflow: hidden;
+        margin-left: 5px;
+        margin-right: 5px;
       /* Establishes a positioning context for absolutely positioned elements */
         /* Other styles remain unchanged */
     }
@@ -129,7 +133,7 @@
         margin-left: 10%;
         margin-right: 10%;
         margin-top: 5px;
-        margin-bottom: 20px;
+        margin-bottom: 0px;
     }
 
     #toggle-buttons button:active { 
