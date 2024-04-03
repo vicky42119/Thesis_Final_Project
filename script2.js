@@ -38,7 +38,7 @@ function setup() {
   // Create toggle buttons for each sensor
   createToggleButtons(sensorColumns);
 
-  camera(0, 1600, 500);
+  camera(0, 2300, 500);
   orbitControl();
 }
 
