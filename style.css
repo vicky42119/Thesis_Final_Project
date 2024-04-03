@@ -15,7 +15,7 @@
 
     main {
         z-index: -1;
-        overflow-y: visible;
+        overflow-y: hidden;
         align-self: center;
       }
 
