@@ -15,7 +15,7 @@ const sensorColors = {
 function preload() {
   // Load the CSV file
   table = loadTable(
-    'data.csv',
+    'data_3.csv',
     'csv',
     'header',
     data => console.log('CSV data loaded successfully:', data),
@@ -70,14 +70,14 @@ function updateSensorData(sensor, sensorValue, rowIndex) {
 }
 
 function calculatePosition(sensor, value, index) {
-  let radius = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, 200, 400);
+  let radius = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, 300, 400);
   let theta = map(index, 0, table.getRowCount(), 0, TWO_PI);
   let phi = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, -PI / 2, PI / 2);
 
   return {
-    x: radius * cos(theta) * cos(phi) + random(-50, 50),
-    y: radius * sin(phi) + random(-50, 50),
-    z: radius * sin(theta) * cos(phi) + random(-50, 50)
+    x: radius * cos(theta) * cos(phi) + random(-50, 10),
+    y: radius * sin(phi) + random(-50, 10),
+    z: radius * sin(theta) * cos(phi) + random(-50, 10)
   };
 }
 
@@ -104,8 +104,8 @@ function draw() {
 }
 
 function drawSensorData(sensor) {
-  for (let i = 0; i < sensorData[sensor].values.length; i += 20) {
-    let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 1, 3);
+  for (let i = 0; i < sensorData[sensor].values.length; i += 10) {
+    let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 1, 10);
     let position = sensorData[sensor].positions[i];
 
     push();

@@ -75,9 +75,9 @@ function calculatePosition(sensor, value, index) {
   let phi = map(value, sensorData[sensor].minValue, sensorData[sensor].maxValue, -PI / 2, PI / 2);
 
   return {
-    x: radius * cos(theta) * cos(phi) + random(-50, 50),
-    y: radius * sin(phi) + random(-50, 50),
-    z: radius * sin(theta) * cos(phi) + random(-50, 50)
+    x: radius * cos(theta) * cos(phi) + random(-50, 10),
+    y: radius * sin(phi) + random(-50, 10),
+    z: radius * sin(theta) * cos(phi) + random(-50, 10)
   };
 }
 
@@ -104,8 +104,8 @@ function draw() {
 }
 
 function drawSensorData(sensor) {
-  for (let i = 0; i < sensorData[sensor].values.length; i += 20) {
-    let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 1, 3);
+  for (let i = 0; i < sensorData[sensor].values.length; i += 40) {
+    let diameter = map(sensorData[sensor].values[i], sensorData[sensor].minValue, sensorData[sensor].maxValue, 0.2, 7);
     let position = sensorData[sensor].positions[i];
 
     push();
