@@ -69,7 +69,11 @@
         margin-top: 20px;
         padding: 10px 20px;
         font-size: 16px;
+        color: white;
         cursor: pointer;
+        border: 2px solid rgb(235, 56, 127);
+        border-radius: 10px;
+        background-color: black;
       }
       
 
@@ -155,11 +159,10 @@
         margin-right: 10%;
         justify-content: center;
         margin: 2em;
+        align-items: baseline;
 
         
     }
-
-
 
     .ddd {
        
@@ -177,6 +180,7 @@
         height: 20px;
         border: 1px solid #000; /* Adjusted to ensure visibility against the border */
         margin-right: 5px;
+        border-radius: 10px;
     
     }
     
@@ -190,6 +194,13 @@
         margin-bottom: 5px;
         color: white; /* Ensures text is white */
     }
+
+    img {
+        border-radius: 300px;
+        height: 300px;
+        width: 300px;
+    }
+
 }
 
 @media (min-width: 600px) {
